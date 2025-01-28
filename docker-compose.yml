@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  go-app:
+    container_name: go-subscriptions
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ibra/go-subscriptions:1.0.0
+    environment:
+      DATABASE_URL: "host=go_db user=postgres password=postgres dbname=postgres sslmode=disable"
+    ports:
+      - "8002:8002"
+    depends_on:
+      - go_db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  go_db:
+    container_name: go_db_subscriptions
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5435:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "127.0.0.1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  pgdata: {}
+
+networks:
+  default:
+    external:
+      name: shared_network
