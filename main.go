@@ -25,7 +25,7 @@ func main() {
 			license_count INT NOT NULL,
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-			deleted_at TIMESTAMP
+			deleted_at TIMESTAMP 
 		);
 
 		CREATE TABLE IF NOT EXISTS user_subscriptions (
@@ -34,7 +34,7 @@ func main() {
 			subscription_id INT NOT NULL REFERENCES subscriptions(id),
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-			deleted_at TIMESTAMP
+			deleted_at TIMESTAMP 
 		);
 	`)
 	if err != nil {
